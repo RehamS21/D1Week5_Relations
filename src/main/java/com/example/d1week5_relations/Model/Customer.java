@@ -1,10 +1,12 @@
 package com.example.d1week5_relations.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.util.Set;
 
 
 @Setter
@@ -29,4 +31,8 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "customer")
     @PrimaryKeyJoinColumn
     private CustomerDetails customerDetails;
+
+    @ManyToMany
+    @JsonIgnore
+    private Set<Merchant> merchant;
 }

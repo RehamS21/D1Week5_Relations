@@ -4,6 +4,7 @@ import com.example.d1week5_relations.Api.ApiResponse;
 import com.example.d1week5_relations.Model.Customer;
 import com.example.d1week5_relations.Service.CustomerService;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,13 @@ public class CustomerController {
         customerService.deleteCustomer(id);
 
         return ResponseEntity.status(200).body(new ApiResponse("the customer deleted successfully"));
+    }
+
+    @PostMapping("/assign/{merchant_id}/{customer_id}")
+    public ResponseEntity assignCustomersToMerchant(@PathVariable Integer merchant_id , @PathVariable Integer customer_id){
+        customerService.assignCustomerToMerchant(merchant_id,customer_id);
+
+        return ResponseEntity.status(200).body(new ApiResponse("Assign succcssfulyy"));
     }
 
 }

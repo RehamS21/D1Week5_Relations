@@ -2,9 +2,10 @@ package com.example.d1week5_relations.Service;
 
 import com.example.d1week5_relations.Api.ApiException;
 import com.example.d1week5_relations.Model.Customer;
+import com.example.d1week5_relations.Model.Merchant;
 import com.example.d1week5_relations.Repository.CustomerRepository;
+import com.example.d1week5_relations.Repository.MerchantRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final MerchantRepository merchantRepository;
 
 
     public List<Customer> getAllCustomer(){
@@ -41,6 +43,20 @@ public class CustomerService {
             throw new ApiException("Sorry the customer not found");
 
         customerRepository.delete(deleteCustomer);
+    }
+
+    public void assignCustomerToMerchant(Integer merchant_id, Integer customer_id){
+        Merchant merchant = merchantRepository.findMerchantById(merchant_id);
+        Customer customer = customerRepository.findCustomerById(customer_id);
+
+        if (merchant == null || customer == null)
+            throw new ApiException("Wrong");
+
+        merchant.getCustomerSet().add(customer);
+        customer.getMerchant().add(merchant);
+
+        merchantRepository.save(merchant);
+        customerRepository.save(customer);
     }
 
 }
